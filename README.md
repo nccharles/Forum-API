@@ -1,6 +1,3 @@
-[![Build Status](https://travis-ci.org/nccharles/Pro-Lite-API.svg?branch=develop)](https://travis-ci.org/nccharles/Pro-Lite-API)
-[![Maintainability](https://api.codeclimate.com/v1/badges/5daa11aac53bf04a7ffa/maintainability)](https://codeclimate.com/github/nccharles/Pro-Lite-API/maintainability)
-[![Coverage Status](https://coveralls.io/repos/github/nccharles/Pro-Lite-API/badge.png?branch=develop)](https://coveralls.io/github/nccharles/Pro-Lite-API?branch=develop)
 # Forum / Chat System For Developers
 Microservice that allows developers to post questions about issues they are facing. Other developers can respond to the questions in real time
 
@@ -25,7 +22,7 @@ The tools and modules employed in this project are:
 #### Development Setup
 To start this project, install the required modules and dependencies locally using yarn:
 ##### Usage Example
-##### git Clone this [Repository](https://github.com/nccharles/Pro-Lite-API.git)
+##### git Clone this [Repository](https://github.com/nccharles/Forum-API.git)
 ```
 yarn
 yarn run db:create
