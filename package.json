@@ -1,7 +1,7 @@
 {
-  "name": "propertypro-lite",
+  "name": "forum-chat",
   "version": "1.0.0",
-  "description": "Property Pro Lite is a platform where people can create and/or search properties for sale or rent.",
+  "description": "Microservice that allows developers to post questions about issues they are facing. Other developers can respond to the questions in real time.",
   "main": "src/index.js",
   "scripts": {
     "dev": "NODE_ENV=development nodemon --exec babel-node src/index.js",
@@ -22,14 +22,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nccharles/Pro-Lite-API.git"
+    "url": "git+https://github.com/nccharles/Forum-API.git"
   },
   "author": "Charles NDAYISABA",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/nccharles/Pro-Lite-API/issues"
+    "url": "https://github.com/nccharles/Forum-API/issues"
   },
-  "homepage": "https://github.com/nccharles/Pro-Lite-API#readme",
+  "homepage": "https://github.com/nccharles/Forum-API#readme",
   "devDependencies": {
     "@babel/cli": "^7.16.8",
     "@babel/core": "^7.16.12",
