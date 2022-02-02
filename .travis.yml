@@ -21,4 +21,4 @@ after_success:
   - yarn run coverage
   env:
   global:
-    - CODECLIMATE_REPO_TOKEN=62ea5958c87f83dc6b0b28a34f0f9a0cb37a9580a51a0b1674727988089aee57
+    - CODECLIMATE_REPO_TOKEN=de75358f0ca47fb697fc1f69020ab1de6bded9e086937a80adf306dad0f635c2

@@ -1,3 +1,6 @@
+[![Build Status](https://app.travis-ci.com/nccharles/Forum-API.svg?token=3ADYqbe7AFwGJxMgUxpH&branch=main)](https://app.travis-ci.com/nccharles/Forum-API)
+[![Maintainability](https://api.codeclimate.com/v1/badges/bc56ca374e9d3fcfc535/maintainability)](https://codeclimate.com/github/nccharles/Forum-API/maintainability)
+[![Coverage Status](https://coveralls.io/repos/github/nccharles/Forum-API/badge.svg?branch=main)](https://coveralls.io/github/nccharles/Forum-API?branch=main)
 # Forum / Chat System For Developers
 Microservice that allows developers to post questions about issues they are facing. Other developers can respond to the questions in real time
 
@@ -27,7 +30,7 @@ To start this project, install the required modules and dependencies locally usi
 yarn
 yarn run db:create
 yarn run db:migrate
-yarn run start-dev
+yarn run dev
 ```
 #### How to get a local copy and Use
 **Clone repository**
