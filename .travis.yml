@@ -10,15 +10,15 @@ cache:
     - "node_modules"
 
 install:
-  - yarn install
+  - yarn
 
 before_script:
   - psql -c 'create database forumtestdb;' -U postgres
-  - yarn run test:db:migrate
+  - yarn test:db:migrate
 script:
-  - yarn run test
+  - yarn test
 after_success:
-  - yarn run coverage
-  env:
+  - yarn coverage
+env:
   global:
     - CODECLIMATE_REPO_TOKEN=de75358f0ca47fb697fc1f69020ab1de6bded9e086937a80adf306dad0f635c2
