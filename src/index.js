@@ -7,6 +7,7 @@ import path from 'path'
 import http from 'http'
 import cors from 'cors';
 import socketio from 'socket.io'
+import pages from './routers/pages';
 import db from './database'
 import formatMessage from './utils/message';
 import { userJoin, getCurrentUser, userLeave, getRoomUsers } from './utils/users';
@@ -16,14 +17,15 @@ const server = http.createServer(app);
 const io = socketio(server);
 
 //Set static folder
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, './UI')));
 app.use(cors());
 // Body parser Middleware
 app.use(bodyParser.json());
 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
 
-
+//app pages
+app.use("/", pages);
 app.use('/api/v3', frouter);
 // sends out the 10 most recent messages from recent to old
 const emitMostRecentMessages = (socket,user) => {
