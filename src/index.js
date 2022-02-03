@@ -93,12 +93,9 @@ io.on('connection', socket => {
   })
 
 })
-const port = process.env.PORT || 4000
-const socketport = process.env.PORT || 3000
-app.listen(port, () => {
+const port = process.env.PORT || 3000
+
+server.listen(port, () => {
   console.log(`listening on *:${port}`);
 });
-server.listen(socketport, () => {
-  console.log(`listening on *:${socketport}`);
-});
-export default app
+export default server
