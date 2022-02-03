@@ -5,18 +5,7 @@ import server from '../index';
 import db from "../database";
 const { expect } = chai;
 chai.use(chaiHttp);
-describe('Testing welcome endpoints', () => {
-  it('should accept status 200', (done) => {
-    chai.request(server)
-      .get('/')
-      .end((err, res) => {
-        if (err) return done(err);
-        expect((res.status)).to.equal(200);
-        expect((res.body.status)).to.equal(200);
-        expect((res.body.message)).to.equal('Welcome to Forum');
-        done();
-      });
-  });
+describe('Testing endpoints', () => {
   it('it should insert user data to the database', (done) => {
     chai.request(server)
       .post('/api/v3/user')
@@ -37,7 +26,7 @@ describe('Testing welcome endpoints', () => {
     chai.request(server)
       .post('/api/v3/message')
       .send({
-        username: 'Charles',
+        username: 'charles',
         text: 'Hello'
       })
       .end((err, res) => {

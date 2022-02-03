@@ -24,7 +24,7 @@ const forum = {
            const {username} = req.body;
             const table = 'users'
             const columns = `username`;
-            const values = `'${username}'`;
+            const values = `'${username.toLowerCase()}'`;
             db.dataCreate(res, table, columns, values)
                 .then(response => {
                     return response
