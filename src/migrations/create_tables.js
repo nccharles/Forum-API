@@ -22,7 +22,7 @@ const usersTable = `CREATE TABLE users(
 const chatsTable = `CREATE TABLE chats(
     id SERIAL PRIMARY KEY NOT NULL,
     username varchar(255) REFERENCES users(username) NOT NULL,
-    text varchar(255) NOT NULL,
+    text text NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT now()
   );`;
 const createAllTables = async () => {

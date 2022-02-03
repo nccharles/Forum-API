@@ -1,6 +1,7 @@
 import express from 'express'
 import frouter from './routers/forum';
 import bodyParser from 'body-parser';
+import moment from "moment"
 import process from 'process'
 import path from 'path'
 import http from 'http'
@@ -29,6 +30,7 @@ const emitMostRecentMessages = (socket,user) => {
   db.getSocketMessages()
   .then((result) => {
     if (result.length) {
+      result.map(i=>i.created_at=moment(i.created_at).format('h:mm A'))
       io.to(user.room).emit('message', result.reverse());
     } else {
       socket.emit('message', formatMessage(user.room, 'Welcome here is the begginning of your chats'))
