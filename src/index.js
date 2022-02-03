@@ -21,7 +21,7 @@ app.use(cors());
 // Body parser Middleware
 app.use(bodyParser.json());
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 
 app.use('/api/v3', frouter);
