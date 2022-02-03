@@ -7,8 +7,8 @@ import http from 'http'
 import cors from 'cors';
 import socketio from 'socket.io'
 import db from './database'
-import formatMessage from '../utils/message';
-import { userJoin, getCurrentUser, userLeave, getRoomUsers } from '../utils/users';
+import formatMessage from './utils/message';
+import { userJoin, getCurrentUser, userLeave, getRoomUsers } from './utils/users';
 
 const app = express();
 const server = http.createServer(app);
@@ -25,7 +25,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/api/v3', frouter);
 // sends out the 10 most recent messages from recent to old
-const emitMostRecentMessges = (socket,user) => {
+const emitMostRecentMessages = (socket,user) => {
   db.getSocketMessages()
   .then((result) => {
     if (result.length) {
@@ -37,13 +37,24 @@ const emitMostRecentMessges = (socket,user) => {
   .catch(console.log);
 };
 
+
 // Run wen client joins
 io.on('connection', socket => {
-  socket.on('joinRoom', ({ username, room }) => {
-    const user = userJoin(socket.id, username, room)
+  socket.on('joinRoom',async ({ username, room }) => {
+    username=username.toLowerCase();
+    let userData=await db.getSocketUsers();
+    let checkUser=[];
+    if(!userData.some(u=>u.username===username)){
+      const newUser= await db.createSocketUser(username)
+      userData.push(newUser[0])
+      checkUser.push(newUser[0]) 
+    }else{
+      checkUser= userData.filter(u=>u.username===username)
+    }
+    const user = userJoin(checkUser[0], room)
     socket.join(user.room)
     // Welcome current user
-    emitMostRecentMessges(socket,user)
+    emitMostRecentMessages(socket,user)
     // Broadcast when a user connects
     socket.broadcast.to(user.room).emit('message', formatMessage(user.username, `${user.username} has joined the chat`))
 
@@ -52,11 +63,9 @@ io.on('connection', socket => {
       room: user.room,
       users: getRoomUsers(user.room)
     })
-  })
-
-  // Listen for chatMessage
+     // Listen for chatMessage
   socket.on('chatMessage', msg => {
-    const user = getCurrentUser(socket.id)
+    const user = getCurrentUser(checkUser[0].username)
 
     db.createSocketMessage(formatMessage(user.username, msg))
       .then((_) => {
@@ -65,27 +74,24 @@ io.on('connection', socket => {
       .catch((err) => io.emit(err));
 
   })
+    // runs when client disconnect
+  socket.on('disconnect', () => {
+    const user = userLeave(checkUser[0].username);
+    if (user) {
+      io.to(user.room).emit('message', formatMessage(user.username, `${user.username} has left the chat`))
+      // Send users and room info
+      io.to(user.room).emit('roomUsers', {
+        room: user.room,
+        users: getRoomUsers(user.room)
+      })
+    }
+  })
+  })
 
-  // runs when client disconnect
-  // socket.on('disconnect', () => {
-  //   const user = userLeave(socket.id);
-  //   if (user) {
-  //     io.to(user.room).emit('message', formatMessage(user.username, `${user.username} has left the chat`))
-  //     // Send users and room info
-  //     io.to(user.room).emit('roomUsers', {
-  //       room: user.room,
-  //       users: getRoomUsers(user.room)
-  //     })
-  //   }
-  // })
 })
-const port = process.env.PORT || 8080
-const socketport = 5000
+const port = process.env.PORT || 3000
 
-
-app.listen(port, () => {
-  console.log(`App running on ${port}`)
-})
-server.listen(socketport, () => {
-  console.log(`listening on *:${socketport}`);
+server.listen(port, () => {
+  console.log(`listening on *:${port}`);
 });
+export default server

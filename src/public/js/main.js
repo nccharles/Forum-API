@@ -21,7 +21,6 @@ socket.on('roomUsers', ({ room, users }) => {
 
 // Message from server
 socket.on('message', message => {
-    console.log(Array.isArray(message))
     if (Array.isArray(message)) {
         message.map(msg => outputMessage(msg))
     } else {

@@ -35,6 +35,32 @@ const getSocketMessages = () => {
      );
   });
 };
+const getSocketUsers = (username) => {
+  return new Promise((resolve) => {
+     pool.query(
+        `SELECT * FROM users`,
+        (error, results) => {
+           if (error) {
+              throw error;
+           }
+           resolve(results.rows);
+         }
+     );
+  });
+};
+const createSocketUser = (username) => {
+  return new Promise((resolve) => {
+     pool.query(`INSERT INTO users (username) VALUES ($1) RETURNING *;`,
+        [username],
+        (error, results) => {
+           if (error) {
+              throw error;
+           }
+           resolve(results.rows);
+        }
+     );
+  });
+};
 const createSocketMessage = (message) => {
   return new Promise((resolve) => {
      pool.query(`INSERT INTO chats (username,text) VALUES ($1, $2) RETURNING *;`,
@@ -62,4 +88,4 @@ const getChats = async (columns) => {
   return rows;
 }
 
-export default { query, getChats, dataCreate,getSocketMessages,createSocketMessage };
+export default { query, getChats, dataCreate,getSocketMessages,createSocketMessage,createSocketUser,getSocketUsers };
