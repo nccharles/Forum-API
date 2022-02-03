@@ -17,7 +17,7 @@ const server = http.createServer(app);
 const io = socketio(server);
 
 //Set static folder
-app.use(express.static(path.join(__dirname, './UI')));
+app.use(express.static(path.join(__dirname, '../UI')));
 app.use(cors());
 // Body parser Middleware
 app.use(bodyParser.json());
