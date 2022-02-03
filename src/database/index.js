@@ -22,10 +22,37 @@ const query = (text, params, isArr = false) => {
   });
 };
 
+const getSocketMessages = () => {
+  return new Promise((resolve) => {
+     pool.query(
+        "SELECT * FROM chats ORDER BY id DESC LIMIT 10",
+        (error, results) => {
+           if (error) {
+              throw error;
+           }
+           resolve(results.rows);
+         }
+     );
+  });
+};
+const createSocketMessage = (message) => {
+  return new Promise((resolve) => {
+     pool.query(`INSERT INTO chats (username,text) VALUES ($1, $2) RETURNING *;`,
+        [message.username,message.text],
+        (error, results) => {
+           if (error) {
+              throw error;
+           }
+           resolve(results.rows);
+        }
+     );
+  });
+};
+
 const dataCreate = async (res, table, columns, values) => {
   const queryString = `INSERT INTO ${table} (${columns}) VALUES (${values}) RETURNING *;`;
   const { rows: Result } = await pool.query(queryString);
-  return serverFeedback(res, 201, ...['status', 201, 'message', 'Chat successfully added', 'data', Result[0]]);
+  return serverFeedback(res, 201, ...['status', 201, 'message', 'success', 'data', Result[0]]);
 };
 
 const getChats = async (columns) => {
@@ -35,4 +62,4 @@ const getChats = async (columns) => {
   return rows;
 }
 
-export default { query, getChats, dataCreate };
+export default { query, getChats, dataCreate,getSocketMessages,createSocketMessage };
