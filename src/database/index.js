@@ -63,8 +63,8 @@ const createSocketUser = (username) => {
 };
 const createSocketMessage = (message) => {
   return new Promise((resolve) => {
-     pool.query(`INSERT INTO chats (username,text) VALUES ($1, $2) RETURNING *;`,
-        [message.username,message.text],
+     pool.query(`INSERT INTO chats (username,text,room) VALUES ($1, $2,$3) RETURNING *;`,
+        [message.username,message.text,message.room],
         (error, results) => {
            if (error) {
               throw error;

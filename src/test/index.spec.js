@@ -5,12 +5,13 @@ import server from '../index';
 import db from "../database";
 const { expect } = chai;
 chai.use(chaiHttp);
+
 describe('Testing endpoints', () => {
-  it('it should insert user data to the database', (done) => {
+  it('it should insert first user to the database', (done) => {
     chai.request(server)
       .post('/api/v3/user')
       .send({
-        username: 'Charles',
+        username: 'charles',
       })
       .end((err, res) => {
         if (err) return done(err);
@@ -22,12 +23,46 @@ describe('Testing endpoints', () => {
         done();
       });
   });
+  it('it should insert second user to the database', (done) => {
+    chai.request(server)
+      .post('/api/v3/user')
+      .send({
+        username: 'veve',
+      })
+      .end((err, res) => {
+        if (err) return done(err);
+        expect(res.body).to.have.keys('status','message','data');
+        expect(res.status).to.be.a('number');
+        expect((res.body)).to.be.an('object');
+        expect((res.body.data.id)).to.be.a('number');
+        expect((res.body.data.username)).to.be.a('string');
+        done();
+      });
+  });
+  it('it should insert room data to the database', (done) => {
+    chai.request(server)
+      .post('/api/v3/room/veve')
+      .send({
+        username: 'charles'
+      })
+      .end((err, res) => {
+        if (err) return done(err);
+        expect(res.body).to.have.keys('status','message','data');
+        expect(res.status).to.be.a('number');
+        expect((res.body)).to.be.an('object');
+        expect((res.body.data.id)).to.be.a('number');
+        expect((res.body.data.name)).to.be.a('string');
+        expect((res.body.data.participants)).to.be.a('array');
+        done();
+      });
+  });
   it('it should insert chat data to the database', (done) => {
     chai.request(server)
       .post('/api/v3/message')
       .send({
         username: 'charles',
-        text: 'Hello'
+        text: 'Hello',
+        room:1
       })
       .end((err, res) => {
         if (err) return done(err);
@@ -49,32 +84,24 @@ describe('Testing endpoints', () => {
         expect(res.body).to.have.keys('status','message','data');
         expect(res.status).to.be.a('number');
         expect((res.body)).to.be.an('object');
-        done();
+        done(err);
       });
   });
   
-  it("It should truncate users table", done => {
-    const queryText = "TRUNCATE users CASCADE";
-    db.query(queryText)
-      .then(response => {
-          expect(response).to.be.an("array");
-          expect(response.length).to.equal(0);
-        done();
-      })
-      .catch(err => {
-        done();
-      });
-  });
-  it("It should truncate chats table", done => {
-    const queryText = "TRUNCATE chats CASCADE";
-    db.query(queryText)
-      .then(response => {
-          expect(response).to.be.an("array");
-          expect(response.length).to.equal(0);
-        done();
-      })
-      .catch(err => {
-        done();
-      });
-  });
 });
+describe('Truncate tables', () => {
+  it("It should truncate tables", done => {
+   
+    const queryText = "TRUNCATE users,chats,rooms RESTART IDENTITY";
+    db.query(queryText)
+      .then(response => {
+          expect(response).to.be.an("array");
+          expect(response.length).to.equal(0);
+        done();
+      })
+      .catch(err => {
+        done();
+      });
+  });
+ 
+  })

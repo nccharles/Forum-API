@@ -58,5 +58,5 @@ const outputRoomName = (room) => {
 }
 const outputUsers = (users) => {
     userList.innerHTML = `
-    ${users.map(user => `<li>${user.username}</li>`).join('')}`
+    ${users.map(user => `<li><a href="chat?username=${username}&room=${user.username}">${user.username}</a></li>`).join('')}`
 }
