@@ -46,8 +46,16 @@ const emitMostRecentMessages = (socket,user) => {
 io.on('connection', socket => {
   socket.on('joinRoom',async ({ username, room }) => {
     username=username.toLowerCase();
-    let userData=await db.getSocketUsers();
-    console.log(userData)
+    room=room.toLowerCase()
+    const a=username+"_"+room;
+    const b=room+"_"+username;
+    let userData=[];
+    if(room==='devs'){
+      userData = await db.getRoomChats(room,room);
+    }else{
+      userData = await db.getRoomChats(a,b);
+    }
+    return false
     let checkUser=[];
     if(!userData.some(u=>u.username===username)){
       const newUser= await db.createSocketUser(username)

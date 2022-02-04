@@ -124,29 +124,7 @@ describe('Testing endpoints', () => {
   });
   
 });
-describe('Testing Sockets function', () => {
-  it('It should get all users',async (done) => {
-      await db.getSocketUsers().then((result) => {
-      expect(result).to.be.a('array');     
-      }).then(done());
-    
-  })
-  it('It should get all messages',async (done) => {
-  await db.getSocketMessages().then((result) => {
-      expect(result).to.be.a('object');     
-      }).then(done());
-  })
-  it('It should create message',async (done) => {
-      await db.createSocketMessage().then((result) => {
-          expect(result).to.be.a('object');     
-          }).then(done());
-      })
-  it('It should create user with username',async (done) => {
-      await db.createSocketUser('kalisa').then((result) => {
-          expect(result).to.be.a('object');     
-          }).then(done());
-      })
-})
+
 describe('Truncate tables', () => {
   it("It should truncate tables", done => {
    
