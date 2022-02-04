@@ -35,6 +35,19 @@ const getSocketMessages = () => {
      );
   });
 };
+const getSocketRooms = () => {
+   return new Promise((resolve) => {
+      pool.query(
+         "SELECT * FROM rooms ORDER BY id DESC",
+         (error, results) => {
+            if (error) {
+               throw error;
+            }
+            resolve(results.rows);
+          }
+      );
+   });
+ };
 const getSocketUsers = (username) => {
   return new Promise((resolve) => {
      pool.query(
@@ -74,7 +87,19 @@ const createSocketMessage = (message) => {
      );
   });
 };
-
+const createSocketRoom = (message) => {
+   return new Promise((resolve) => {
+      pool.query(`INSERT INTO chats (username,room,text) VALUES ($1, $2,$3) RETURNING *;`,
+         [message.username,message.room,message.text],
+         (error, results) => {
+            if (error) {
+               throw error;
+            }
+            resolve(results.rows);
+         }
+      );
+   });
+ };
 const dataCreate = async (res, table, columns, values) => {
   const queryString = `INSERT INTO ${table} (${columns}) VALUES (${values}) RETURNING *;`;
   const { rows: Result } = await pool.query(queryString);
@@ -87,5 +112,23 @@ const getChats = async (columns) => {
   const { rows } = await pool.query(query);
   return rows;
 }
+const getRooms = async (columns) => {
 
-export default { query, getChats, dataCreate,getSocketMessages,createSocketMessage,createSocketUser,getSocketUsers };
+   const query = `SELECT ${columns} FROM rooms;`;
+   const { rows } = await pool.query(query);
+   return rows;
+ }
+ const getRoomChats = async (a,b) => {
+
+   const query = `SELECT * FROM rooms WHERE name='${a}' or name='${b}';`;
+   let { rows } = await pool.query(query);
+   rows[0].chats=[]
+   if(rows){
+   const chatquery = `SELECT * FROM chats where room=${rows[0].id};`;
+   const data = (await pool.query(chatquery)).rows; 
+  rows[0].chats=data
+   }
+   return rows[0];
+ }
+
+export default { query,getRoomChats,getRooms, getChats,getSocketRooms, dataCreate,getSocketMessages,createSocketMessage,createSocketUser,getSocketUsers };

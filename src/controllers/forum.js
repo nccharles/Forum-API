@@ -11,6 +11,7 @@ const forum = {
                 .then(response => {
                     return response
                 }).catch(err => {
+                    console.log(err)
                     return findError(res);
                 });
         } catch (err) {
@@ -69,6 +70,37 @@ const forum = {
             return findError(res);
         }
     },
-   
+    getRoomChats(req, res) {
+        try {
+            const {username} = req.body;
+            const {other}=req.params;
+            const a=username+"_"+other;
+            const b=other+"_"+username;
+            db.getRoomChats(a.toLowerCase(),b.toLowerCase())
+                    .then(response => {
+
+                        return serverFeedback(res, 200, ...['status', 200, 'message', 'Ok', 'data', response]);
+                    }).catch(err => {
+                        return findError(res);
+                    });
+        } catch (err) {
+            return findError(res);
+        }
+    },
+    getAllRooms(req, res) {
+        try {
+            const {username}=req.body
+            const columns = `*`;
+            db.getRooms(columns)
+                    .then(response => {
+                      const data=response.filter(r=>r.participants.includes(username.toLowerCase()))
+                        return serverFeedback(res, 200, ...['status', 200, 'message', 'Ok', 'data', data]);
+                    }).catch(err => {
+                        return findError(res);
+                    });
+        } catch (err) {
+            return findError(res);
+        }
+    },
 }
 export default forum;

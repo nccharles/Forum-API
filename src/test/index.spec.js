@@ -56,9 +56,27 @@ describe('Testing endpoints', () => {
         done();
       });
   });
+  it('it should get room chats', (done) => {
+    chai.request(server)
+      .get('/api/v3/room/veve')
+      .send({
+        username: 'charles'
+      })
+      .end((err, res) => {
+        if (err) return done(err);
+        expect(res.body).to.have.keys('status','message','data');
+        expect(res.status).to.be.a('number');
+        expect((res.body)).to.be.an('object');
+        expect((res.body.data.id)).to.be.a('number');
+        expect((res.body.data.name)).to.be.a('string');
+        expect((res.body.data.participants)).to.be.a('array');
+        expect((res.body.data.chats)).to.be.a('array');
+        done();
+      });
+  });
   it('it should insert chat data to the database', (done) => {
     chai.request(server)
-      .post('/api/v3/message')
+      .post('/api/v3/chat')
       .send({
         username: 'charles',
         text: 'Hello',
@@ -76,9 +94,9 @@ describe('Testing endpoints', () => {
       });
   });
 
-  it('it should get all data from database', (done) => {
+  it('it should get all forum chats from database', (done) => {
     chai.request(server)
-      .get('/api/v3/messages')
+      .get('/api/v3/chats')
       .end((err, res) => {
         if (err) return done(err);
         expect(res.body).to.have.keys('status','message','data');
@@ -89,6 +107,29 @@ describe('Testing endpoints', () => {
   });
   
 });
+describe('Testing Sockets function', () => {
+  it('It should get all users',async (done) => {
+      await db.getSocketUsers().then((result) => {
+      expect(result).to.be.a('array');     
+      }).then(done());
+    
+  })
+  it('It should get all messages',async (done) => {
+  await db.getSocketMessages().then((result) => {
+      expect(result).to.be.a('object');     
+      }).then(done());
+  })
+  it('It should create message',async (done) => {
+      await db.createSocketMessage().then((result) => {
+          expect(result).to.be.a('object');     
+          }).then(done());
+      })
+  it('It should create user with username',async (done) => {
+      await db.createSocketUser('kalisa').then((result) => {
+          expect(result).to.be.a('object');     
+          }).then(done());
+      })
+})
 describe('Truncate tables', () => {
   it("It should truncate tables", done => {
    
