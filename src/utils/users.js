@@ -27,6 +27,4 @@ const getRoomUsers = (room) => {
     return users.filter(user => user.room === room)
 }
 
-module.exports = {
-    userJoin, getCurrentUser, userLeave, getRoomUsers
-}
+export default { userJoin, getCurrentUser, userLeave, getRoomUsers}

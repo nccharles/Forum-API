@@ -23,6 +23,8 @@ body {
 
 ul {
 	list-style: none;
+	display: flex;
+	flex-direction: row;
 }
 
 a {
@@ -82,10 +84,17 @@ a {
 }
 
 .chat-sidebar ul li {
-	padding: 10px 0;
+	margin: 10px 0;
 	text-transform: capitalize;
 }
-
+.chat-header ul li{
+	margin: 0 10px;
+	border-radius: 10px;
+	padding: 5px;
+	color:#777;
+	background-color: var(--light-color);
+	text-transform: capitalize;
+}
 .chat-messages {
 	padding: 30px;
 	max-height: 500px;
