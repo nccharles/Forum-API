@@ -74,6 +74,23 @@ describe('Testing endpoints', () => {
         done();
       });
   });
+  it('it should get user rooms', (done) => {
+    chai.request(server)
+      .get('/api/v3/rooms')
+      .send({
+        username: 'charles'
+      })
+      .end((err, res) => {
+        if (err) return done(err);
+        expect(res.body).to.have.keys('status','message','data');
+        expect(res.status).to.be.a('number');
+        expect((res.body)).to.be.an('object');
+        expect((res.body.data[0].id)).to.be.a('number');
+        expect((res.body.data[0].name)).to.be.a('string');
+        expect((res.body.data[0].participants)).to.be.a('array');
+        done();
+      });
+  });
   it('it should insert chat data to the database', (done) => {
     chai.request(server)
       .post('/api/v3/chat')

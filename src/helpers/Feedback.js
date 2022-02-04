@@ -7,13 +7,3 @@ export const serverFeedback = (res, status, ...[statusKey, statusResult,msgkey,m
     [msgkey]: message,
     [Key]: Value
 });
-export const authFeedback = (res, status, ...[statusKey, statusResult,msgkey,message, Key, Value]) => res.status(status).json({
-    [statusKey]: statusResult,
-    [msgkey]: message,
-    [Key]: Value
-});
-export const userFeedback = (res, status, ...[statusKey, statusResult,msgkey,message, Key, Value]) => res.status(status).json({
-    [statusKey]: statusResult,
-    [msgkey]: message,
-    [Key]: Value
-});
