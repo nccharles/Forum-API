@@ -26,11 +26,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use("/", pages);
 app.use('/api/v3', frouter);
 // sends out the 10 most recent messages from recent to old
-const emitMostRecentMessages = async (socket, room, name) => {
+const emitMostRecentMessages = async (socket, room) => {
   const result = (await db.getChats('*')).filter(c => c.room === room.id)
   if (result.length) {
     result.map(i => i.created_at = moment(i.created_at).format('h:mm A'))
-    io.to(name).emit('message', result);
+    io.to(room.name).emit('message', result);
   } else {
     socket.emit('message', formatMessage("bot", 'Welcome here is the begginning of your chats'))
   }
@@ -60,23 +60,23 @@ io.on('connection', socket => {
         userData = roomData.participants
       }
     }
-    socket.join(room)
+    socket.join(roomData.name)
     // Welcome current user
-    emitMostRecentMessages(socket, roomData, room)
+    emitMostRecentMessages(socket, roomData)
     // Broadcast when a user connects
-    socket.broadcast.to(room).emit('message', formatMessage("bot", `${username} has joined the chat`))
+    socket.broadcast.to(roomData.name).emit('message', formatMessage("bot", `${username} has joined the chat`))
 
     // Send users and room info
-    io.to(room).emit('roomUsers', {
-      room: room,
+    io.to(roomData.name).emit('roomUsers', {
+      room: roomData.name,
       rooms: (await db.getRooms('*')).filter(r => r.participants.includes(username) || r.participants.includes('devs')),
       users: userData
     })
     // Listen for chatMessage
     socket.on('chatMessage', msg => {
       db.dataCreate('chats', `username,text,room`, `'${username}', '${msg}',${roomData.id}`)
-        .then((_) => {
-          io.to(room).emit('message', formatMessage(username, msg));
+        .then((result) => {
+          io.to(roomData.name).emit('message', formatMessage(username, msg));
         })
         .catch((err) => io.emit(err));
 
@@ -84,8 +84,8 @@ io.on('connection', socket => {
     // runs when client disconnect
     socket.on('disconnect', async () => {
       // Send users and room info
-      io.to(room).emit('roomUsers', {
-        room: room,
+      io.to(roomData.name).emit('roomUsers', {
+        room: roomData.name,
         rooms: (await db.getRooms('*')).filter(r => r.participants.includes(username) || r.participants.includes('devs')),
         users: userData
       })

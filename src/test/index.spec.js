@@ -23,6 +23,19 @@ describe('Testing endpoints', () => {
         done();
       });
   });
+  it('it should throw an error', (done) => {
+    chai.request(server)
+      .post('/api/v3/user')
+      .send({
+        username: 'charles',
+      })
+      .end((err, res) => {
+        if (err) return done(err);
+        expect(res.body).to.have.keys('status','error');
+        expect(res.status).to.be.a('number');
+        done();
+      });
+  });
   it('it should insert second user to the database', (done) => {
     chai.request(server)
       .post('/api/v3/user')
@@ -132,6 +145,7 @@ describe('Truncate tables', () => {
     db.query(queryText)
       .then(response => {
           expect(response).to.be.an("array");
+          done();
       }).catch(err => {
         done();
       });
