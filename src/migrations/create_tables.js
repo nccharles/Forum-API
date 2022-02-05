@@ -34,7 +34,7 @@ const usersTable = `CREATE TABLE users(
   const roomsTable = `CREATE TABLE rooms(
     id SERIAL PRIMARY KEY NOT NULL,
     name VARCHAR(80) UNIQUE NOT NULL,
-    participants varchar(255) ARRAY DEFAULT ARRAY['*'],
+    participants varchar(255) ARRAY DEFAULT ARRAY['devs'],
     created_at TIMESTAMP NOT NULL DEFAULT now()
   );`;
 const chatsTable = `CREATE TABLE chats(

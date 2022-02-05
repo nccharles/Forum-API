@@ -33,6 +33,14 @@ const getChats = async (columns) => {
   const { rows } = await pool.query(query);
   return rows;
 }
+const getUsers = async (username="") => {
+  let query = `SELECT * FROM users;`;
+  if(username){
+    query=`SELECT * FROM users WHERE username='${username}';`;
+  }
+  const { rows } = await pool.query(query);
+  return rows;
+}
 const getRooms = async (columns) => {
 
    const query = `SELECT ${columns} FROM rooms;`;
@@ -51,4 +59,4 @@ const getRooms = async (columns) => {
    return rows[0] || [];
  }
 
-export default { query,getRoomChats,getRooms, getChats,dataCreate };
+export default { query,getRoomChats,getRooms,getUsers, getChats,dataCreate };

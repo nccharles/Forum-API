@@ -23,12 +23,14 @@ body {
 
 ul {
 	list-style: none;
-	display: flex;
-	flex-direction: row;
 }
 
 a {
 	text-decoration: none;
+	color: var(--dark-color-a);
+}
+li a{
+	color: white;
 }
 
 .btn {
@@ -87,12 +89,10 @@ a {
 	margin: 10px 0;
 	text-transform: capitalize;
 }
-.chat-header ul li{
-	margin: 0 10px;
+.chat-main ul li{
+	margin: 10px auto;
 	border-radius: 10px;
 	padding: 5px;
-	color:#777;
-	background-color: var(--light-color);
 	text-transform: capitalize;
 }
 .chat-messages {
