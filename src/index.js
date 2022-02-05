@@ -28,17 +28,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use("/", pages);
 app.use('/api/v3', frouter);
 // sends out the 10 most recent messages from recent to old
-const emitMostRecentMessages = (socket,user) => {
-  db.getSocketMessages()
-  .then((result) => {
+const emitMostRecentMessages =async (socket,room) => {
+    const result=(await db.getChats('*')).filter(c=>c.room===room.id)
     if (result.length) {
       result.map(i=>i.created_at=moment(i.created_at).format('h:mm A'))
-      io.to(user.room).emit('message', result.reverse());
+      io.to(room.name).emit('message', result.reverse());
     } else {
-      socket.emit('message', formatMessage(user.room, 'Welcome here is the begginning of your chats'))
+      socket.emit('message', formatMessage(room.name, 'Welcome here is the begginning of your chats'))
     }
-  })
-  .catch(console.log);
 };
 
 
@@ -46,58 +43,53 @@ const emitMostRecentMessages = (socket,user) => {
 io.on('connection', socket => {
   socket.on('joinRoom',async ({ username, room }) => {
     username=username.toLowerCase();
+    let userData=[];
+    if(!(await db.getUsers(username)).length){
+      await db.dataCreate('users','username',`'${username}'`)
+    }
     room=room.toLowerCase()
     const a=username+"_"+room;
     const b=room+"_"+username;
-    let userData=[];
+    let roomData=[],checkUser=[];;
     if(room==='devs'){
-      userData = await db.getRoomChats(room,room);
+      roomData = await db.getRoomChats(room,room);
+      userData=await db.getUsers();
     }else{
-      userData = await db.getRoomChats(a,b);
+      roomData = await db.getRoomChats(a,b);
+      if(roomData.id===undefined){ 
+      await db.dataCreate('rooms',`name,participants`,`'${a}', '{${username},${room}}'`)
+      roomData = await db.getRoomChats(a,b);
+      userData=roomData.participants
     }
-    return false
-    let checkUser=[];
-    if(!userData.some(u=>u.username===username)){
-      const newUser= await db.createSocketUser(username)
-      userData.push(newUser[0])
-      checkUser.push(newUser[0]) 
-    }else{
-      checkUser= userData.filter(u=>u.username===username)
     }
-    const user = newUser.userJoin(checkUser[0], room)
-    socket.join(user.room)
+    socket.join(roomData.name)
     // Welcome current user
-    emitMostRecentMessages(socket,user)
+    emitMostRecentMessages(socket,roomData)
     // Broadcast when a user connects
-    socket.broadcast.to(user.room).emit('message', formatMessage(user.username, `${user.username} has joined the chat`))
+    socket.broadcast.to(roomData.name).emit('message', formatMessage(username, `${username} has joined the chat`))
 
     // Send users and room info
-    io.to(user.room).emit('roomUsers', {
-      room: user.room,
-      users: newUser.getRoomUsers(user.room)
+    io.to(roomData.name).emit('roomUsers', {
+      room: roomData.name,
+      users: newUser.getRoomUsers(roomData.name)
     })
      // Listen for chatMessage
   socket.on('chatMessage', msg => {
-    const user = newUser.getCurrentUser(checkUser[0].username)
-
-    db.createSocketMessage(formatMessage(user.username, msg))
+    db.dataCreate('chats',`username,text,room`,`'${username}', '${msg}',${roomData.id}`)
       .then((_) => {
-        io.to(user.room).emit('message', formatMessage(user.username, msg));
+        io.to(room).emit('message', formatMessage(username, msg));
       })
       .catch((err) => io.emit(err));
 
   })
     // runs when client disconnect
   socket.on('disconnect', () => {
-    const user = newUser.userLeave(checkUser[0].username);
-    if (user) {
-      io.to(user.room).emit('message', formatMessage(user.username, `${user.username} has left the chat`))
+      io.to(roomData.name).emit('message', formatMessage(username, `${username} has left the chat`))
       // Send users and room info
-      io.to(user.room).emit('roomUsers', {
-        room: user.room,
-        users: newUser.getRoomUsers(user.room)
+      io.to(roomData.name).emit('roomUsers', {
+        room: roomData.name,
+        users: userData
       })
-    }
   })
   })
 
