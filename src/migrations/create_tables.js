@@ -17,6 +17,16 @@ const dropping = async () => {
     return `${err}, Dropped failed`;
   }
 };
+const insertData = async () => {
+  const roomInsert = `INSERT INTO rooms(name) 
+  VALUES('devs')`;
+  try {
+    await pool.query(roomInsert);
+    console.log("Data Inserted");
+  } catch (err) {
+    console.log(`${err}, Inserted failed`);
+  }
+};
 const usersTable = `CREATE TABLE users(
     id SERIAL PRIMARY KEY NOT NULL,
     username VARCHAR(80) UNIQUE NOT NULL
@@ -24,7 +34,7 @@ const usersTable = `CREATE TABLE users(
   const roomsTable = `CREATE TABLE rooms(
     id SERIAL PRIMARY KEY NOT NULL,
     name VARCHAR(80) UNIQUE NOT NULL,
-    participants varchar(255) ARRAY NOT NULL,
+    participants varchar(255) ARRAY DEFAULT ARRAY['*'],
     created_at TIMESTAMP NOT NULL DEFAULT now()
   );`;
 const chatsTable = `CREATE TABLE chats(
@@ -48,6 +58,7 @@ const createAllTables = async () => {
 const forumTables = async () => {
   await dropping();
   await createAllTables();
+  await insertData();
   await process.exit(0);
 };
 forumTables();

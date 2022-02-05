@@ -7,11 +7,10 @@ const forum = {
             const table = 'chats'
             const columns = `username,text,room`;
             const values = `'${username}', '${text}',${room}`;
-            db.dataCreate(res, table, columns, values)
+            db.dataCreate(table, columns, values)
                 .then(response => {
-                    return response
+                    return serverFeedback(res, 201, ...['status', 201, 'message', 'success', 'data', response])
                 }).catch(err => {
-                    console.log(err)
                     return findError(res);
                 });
         } catch (err) {
@@ -26,9 +25,9 @@ const forum = {
             const table = 'rooms'
             const columns = `name,participants`;
             const values = `'${username+"_"+other}', '{${username},${other}}'`;
-            db.dataCreate(res, table, columns, values)
+            db.dataCreate(table, columns, values)
                 .then(response => {
-                    return response
+                    return serverFeedback(res, 201, ...['status', 201, 'message', 'success', 'data', response])
                 }).catch(err => {
                     return findError(res);
                 });
@@ -44,9 +43,9 @@ const forum = {
             const table = 'users'
             const columns = `username`;
             const values = `'${username.toLowerCase()}'`;
-            db.dataCreate(res, table, columns, values)
+            db.dataCreate(table, columns, values)
                 .then(response => {
-                    return response
+                    return serverFeedback(res, 201, ...['status', 201, 'message', 'success', 'data', response])
                 }).catch(err => {
                     return findError(res);
                 });
@@ -93,7 +92,7 @@ const forum = {
             const columns = `*`;
             db.getRooms(columns)
                     .then(response => {
-                      const data=response.filter(r=>r.participants.includes(username.toLowerCase()))
+                      const data=response.filter(r=>r.participants.includes(username.toLowerCase()) || r.participants[0]==='*' )
                         return serverFeedback(res, 200, ...['status', 200, 'message', 'Ok', 'data', data]);
                     }).catch(err => {
                         return findError(res);

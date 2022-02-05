@@ -10,7 +10,7 @@ import socketio from 'socket.io'
 import pages from './routers/pages';
 import db from './database'
 import formatMessage from './utils/message';
-import { userJoin, getCurrentUser, userLeave, getRoomUsers } from './utils/users';
+import newUser from './utils/users';
 
 const app = express();
 const server = http.createServer(app);
@@ -46,7 +46,16 @@ const emitMostRecentMessages = (socket,user) => {
 io.on('connection', socket => {
   socket.on('joinRoom',async ({ username, room }) => {
     username=username.toLowerCase();
-    let userData=await db.getSocketUsers();
+    room=room.toLowerCase()
+    const a=username+"_"+room;
+    const b=room+"_"+username;
+    let userData=[];
+    if(room==='devs'){
+      userData = await db.getRoomChats(room,room);
+    }else{
+      userData = await db.getRoomChats(a,b);
+    }
+    return false
     let checkUser=[];
     if(!userData.some(u=>u.username===username)){
       const newUser= await db.createSocketUser(username)
@@ -55,7 +64,7 @@ io.on('connection', socket => {
     }else{
       checkUser= userData.filter(u=>u.username===username)
     }
-    const user = userJoin(checkUser[0], room)
+    const user = newUser.userJoin(checkUser[0], room)
     socket.join(user.room)
     // Welcome current user
     emitMostRecentMessages(socket,user)
@@ -65,11 +74,11 @@ io.on('connection', socket => {
     // Send users and room info
     io.to(user.room).emit('roomUsers', {
       room: user.room,
-      users: getRoomUsers(user.room)
+      users: newUser.getRoomUsers(user.room)
     })
      // Listen for chatMessage
   socket.on('chatMessage', msg => {
-    const user = getCurrentUser(checkUser[0].username)
+    const user = newUser.getCurrentUser(checkUser[0].username)
 
     db.createSocketMessage(formatMessage(user.username, msg))
       .then((_) => {
@@ -80,13 +89,13 @@ io.on('connection', socket => {
   })
     // runs when client disconnect
   socket.on('disconnect', () => {
-    const user = userLeave(checkUser[0].username);
+    const user = newUser.userLeave(checkUser[0].username);
     if (user) {
       io.to(user.room).emit('message', formatMessage(user.username, `${user.username} has left the chat`))
       // Send users and room info
       io.to(user.room).emit('roomUsers', {
         room: user.room,
-        users: getRoomUsers(user.room)
+        users: newUser.getRoomUsers(user.room)
       })
     }
   })
