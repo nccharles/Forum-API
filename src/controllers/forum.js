@@ -55,13 +55,12 @@ const forum = {
         }
     },
 
-    getAllChats(req, res) {
+    getForumChats(req, res) {
         try {
             const columns = `*`;
             db.getChats(columns)
                     .then(response => {
-
-                        return serverFeedback(res, 200, ...['status', 200, 'message', 'Ok', 'data', response]);
+                        return serverFeedback(res, 200, ...['status', 200, 'message', 'Ok', 'data', response.filter(c => c.room === 1)]);
                     }).catch(err => {
                         return findError(res);
                     });
