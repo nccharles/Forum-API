@@ -41,7 +41,7 @@ li a{
 	border: 0;
 	font-size: 17px;
 }
-.btn-send .btn-out{
+.btn-send,.btn-out{
 	border-radius: 50%;
 }
 #msg{
