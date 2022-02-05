@@ -36,11 +36,13 @@ li a{
 .btn {
 	cursor: pointer;
 	padding: 10px 12px;
-	border-radius: 50%;
 	background: var(--light-color);
 	color: var(--dark-color-a);
 	border: 0;
 	font-size: 17px;
+}
+.btn-send .btn-out{
+	border-radius: 50%;
 }
 #msg{
 	border-radius: 15px;
