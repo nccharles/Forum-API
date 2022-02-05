@@ -64,7 +64,7 @@ io.on('connection', socket => {
     // Welcome current user
     emitMostRecentMessages(socket, roomData, room)
     // Broadcast when a user connects
-    // socket.broadcast.to(room).emit('message', formatMessage(username, `${username} has joined the chat`))
+    socket.broadcast.to(room).emit('message', formatMessage("bot", `${username} has joined the chat`))
 
     // Send users and room info
     io.to(room).emit('roomUsers', {
@@ -83,7 +83,6 @@ io.on('connection', socket => {
     })
     // runs when client disconnect
     socket.on('disconnect', async () => {
-      // io.to(room).emit('message', formatMessage(username, `${username} has left the chat`))
       // Send users and room info
       io.to(room).emit('roomUsers', {
         room: room,
