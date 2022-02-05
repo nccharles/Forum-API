@@ -17,6 +17,7 @@ socket.emit('joinRoom', { username, room })
 socket.on('roomUsers', ({ rooms, room, users }) => {
     outputRoomName(room)
     outputUsers(rooms)
+    console.log(rooms)
 })
 
 // Message from server
@@ -47,7 +48,7 @@ chatForm.addEventListener('submit', (e) => {
 const outputMessage = (message) => {
     const div = document.createElement('div');
     div.classList.add('message');
-    div.innerHTML = ` <p class="meta">${message.username === "bot" ? "bot" : `<a href="chat?username=${username}&room=${message.username}">${message.username}</a>`}<span>${message.created_at}</span></p>
+    div.innerHTML = ` <p class="meta">${message.username === "bot"?"bot":message.username === username.toLowerCase() ? "Me" : `<a href="chat?username=${username}&room=${message.username}">${message.username}</a>`}<span>${message.created_at}</span></p>
 <p class="text">
  ${message.text}    
 </p>`
@@ -58,5 +59,5 @@ const outputRoomName = (room) => {
 }
 const outputUsers = (users) => {
     userList.innerHTML = `
-    ${users.map(user => `<li><a href="chat?username=${username}&room=${user.participants.find(u => u === single || u === 'devs') || ""}">${user.participants.find(u => u === single || u === 'devs') || ""}</a></li>`).join('')}`
+    ${users.map(user => `<li><a href="chat?username=${username}&room=${user.participants.find(u => u !== username.toLowerCase() || u === 'devs')}">${user.participants.find(u => u !== username.toLowerCase() || u === 'devs')}</a></li>`).join('')}`
 }
