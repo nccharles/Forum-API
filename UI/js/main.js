@@ -7,16 +7,16 @@ const { username, room } = Qs.parse(location.search, {
     ignoreQueryPrefix: true
 })
 
-
+const single = room;
 const socket = io();
 
 // Join Chatroom
 socket.emit('joinRoom', { username, room })
 
 // Get room and users
-socket.on('roomUsers', ({ room, users }) => {
+socket.on('roomUsers', ({ rooms, room, users }) => {
     outputRoomName(room)
-    outputUsers(users)
+    outputUsers(rooms)
 })
 
 // Message from server
@@ -47,16 +47,16 @@ chatForm.addEventListener('submit', (e) => {
 const outputMessage = (message) => {
     const div = document.createElement('div');
     div.classList.add('message');
-    div.innerHTML = ` <p class="meta">${message.username}<span>${message.created_at}</span></p>
+    div.innerHTML = ` <p class="meta">${message.username === "bot" ? "bot" : `<a href="chat?username=${username}&room=${message.username}">${message.username}</a>`}<span>${message.created_at}</span></p>
 <p class="text">
  ${message.text}    
 </p>`
     document.querySelector('.chat-messages').appendChild(div)
 }
 const outputRoomName = (room) => {
-    roomName.innerHTML = room
+    roomName.innerHTML = room !== 'devs' ? single : room
 }
 const outputUsers = (users) => {
     userList.innerHTML = `
-    ${users.map(user => `<li><a href="chat?username=${username}&room=${user.username}">${user.username}</a></li>`).join('')}`
+    ${users.map(user => `<li><a href="chat?username=${username}&room=${user.participants.find(u => u === single || u === 'devs') || ""}">${user.participants.find(u => u === single || u === 'devs') || ""}</a></li>`).join('')}`
 }

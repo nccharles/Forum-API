@@ -10,8 +10,6 @@ import socketio from 'socket.io'
 import pages from './routers/pages';
 import db from './database'
 import formatMessage from './utils/message';
-import newUser from './utils/users';
-
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
@@ -28,69 +26,71 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use("/", pages);
 app.use('/api/v3', frouter);
 // sends out the 10 most recent messages from recent to old
-const emitMostRecentMessages =async (socket,room) => {
-    const result=(await db.getChats('*')).filter(c=>c.room===room.id)
-    if (result.length) {
-      result.map(i=>i.created_at=moment(i.created_at).format('h:mm A'))
-      io.to(room.name).emit('message', result.reverse());
-    } else {
-      socket.emit('message', formatMessage(room.name, 'Welcome here is the begginning of your chats'))
-    }
+const emitMostRecentMessages = async (socket, room, name) => {
+  const result = (await db.getChats('*')).filter(c => c.room === room.id)
+  if (result.length) {
+    result.map(i => i.created_at = moment(i.created_at).format('h:mm A'))
+    io.to(name).emit('message', result);
+  } else {
+    socket.emit('message', formatMessage("bot", 'Welcome here is the begginning of your chats'))
+  }
 };
 
 
 // Run wen client joins
 io.on('connection', socket => {
-  socket.on('joinRoom',async ({ username, room }) => {
-    username=username.toLowerCase();
-    let userData=[];
-    if(!(await db.getUsers(username)).length){
-      await db.dataCreate('users','username',`'${username}'`)
+  socket.on('joinRoom', async ({ username, room }) => {
+    username = username.toLowerCase();
+    let userData = [];
+    if (!(await db.getUsers(username)).length) {
+      await db.dataCreate('users', 'username', `'${username}'`)
     }
-    room=room.toLowerCase()
-    const a=username+"_"+room;
-    const b=room+"_"+username;
-    let roomData=[],checkUser=[];;
-    if(room==='devs'){
-      roomData = await db.getRoomChats(room,room);
-      userData=await db.getUsers();
-    }else{
-      roomData = await db.getRoomChats(a,b);
-      if(roomData.id===undefined){ 
-      await db.dataCreate('rooms',`name,participants`,`'${a}', '{${username},${room}}'`)
-      roomData = await db.getRoomChats(a,b);
-      userData=roomData.participants
+    room = room.toLowerCase()
+    const a = username + "_" + room;
+    const b = room + "_" + username;
+    let roomData = [];
+    if (room === 'devs') {
+      roomData = await db.getRoomChats(room, room);
+      userData = await db.getUsers();
+    } else {
+      roomData = await db.getRoomChats(a, b);
+      if (roomData.id === undefined) {
+        await db.dataCreate('rooms', `name,participants`, `'${a}', '{${username},${room}}'`)
+        roomData = await db.getRoomChats(a, b);
+        userData = roomData.participants
+      }
     }
-    }
-    socket.join(roomData.name)
+    socket.join(room)
     // Welcome current user
-    emitMostRecentMessages(socket,roomData)
+    emitMostRecentMessages(socket, roomData, room)
     // Broadcast when a user connects
-    socket.broadcast.to(roomData.name).emit('message', formatMessage(username, `${username} has joined the chat`))
+    // socket.broadcast.to(room).emit('message', formatMessage(username, `${username} has joined the chat`))
 
     // Send users and room info
-    io.to(roomData.name).emit('roomUsers', {
-      room: roomData.name,
-      users: newUser.getRoomUsers(roomData.name)
+    io.to(room).emit('roomUsers', {
+      room: room,
+      rooms: (await db.getRooms('*')).filter(r => r.participants.includes(username) || r.participants.includes('devs')),
+      users: userData
     })
-     // Listen for chatMessage
-  socket.on('chatMessage', msg => {
-    db.dataCreate('chats',`username,text,room`,`'${username}', '${msg}',${roomData.id}`)
-      .then((_) => {
-        io.to(room).emit('message', formatMessage(username, msg));
-      })
-      .catch((err) => io.emit(err));
+    // Listen for chatMessage
+    socket.on('chatMessage', msg => {
+      db.dataCreate('chats', `username,text,room`, `'${username}', '${msg}',${roomData.id}`)
+        .then((_) => {
+          io.to(room).emit('message', formatMessage(username, msg));
+        })
+        .catch((err) => io.emit(err));
 
-  })
+    })
     // runs when client disconnect
-  socket.on('disconnect', () => {
-      io.to(roomData.name).emit('message', formatMessage(username, `${username} has left the chat`))
+    socket.on('disconnect', async () => {
+      // io.to(room).emit('message', formatMessage(username, `${username} has left the chat`))
       // Send users and room info
-      io.to(roomData.name).emit('roomUsers', {
-        room: roomData.name,
+      io.to(room).emit('roomUsers', {
+        room: room,
+        rooms: (await db.getRooms('*')).filter(r => r.participants.includes(username) || r.participants.includes('devs')),
         users: userData
       })
-  })
+    })
   })
 
 })
