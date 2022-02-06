@@ -44,12 +44,12 @@ chatForm.addEventListener('submit', (e) => {
 })
 
 // Output message to DOM
-const outputMessage = (message) => {
+const outputMessage = (msg) => {
     const div = document.createElement('div');
-    div.classList.add('message');
-    div.innerHTML = ` <p class="meta">${message.username === "bot"?"bot":message.username === username.toLowerCase() ? "Me" : `<a href="chat?username=${username}&room=${message.username}">${message.username}</a>`}<span>${message.created_at}</span></p>
+    div.classList.add(msg.username === "bot"?'bot':msg.username === username.toLowerCase() ? 'me':'message');
+    div.innerHTML = ` <p class="meta">${msg.username === "bot"?"bot":msg.username === username.toLowerCase() ? "Me" : `<a href="chat?username=${username}&room=${msg.username}">${msg.username}</a>`}<span>${msg.created_at}</span></p>
 <p class="text">
- ${message.text}    
+ ${msg.text}    
 </p>`
     document.querySelector('.chat-messages').appendChild(div)
 }
