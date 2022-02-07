@@ -20,8 +20,7 @@ const forum = {
     },
     async addRoom(req, res) {
         try {
-           const {username} = req.body;
-            const {other}=req.params
+           const {username,other}=req.params
             const table = 'rooms'
             const columns = `name,participants`;
             const values = `'${username+"_"+other}', '{${username},${other}}'`;
@@ -70,8 +69,7 @@ const forum = {
     },
     getRoomChats(req, res) {
         try {
-            const {username} = req.body;
-            const {other}=req.params;
+            const {username,other}=req.params;
             const a=username+"_"+other;
             const b=other+"_"+username;
             db.getRoomChats(a.toLowerCase(),b.toLowerCase())
@@ -87,7 +85,7 @@ const forum = {
     },
     getAllRooms(req, res) {
         try {
-            const {username}=req.body
+            const {username}=req.params
             const columns = `*`;
             db.getRooms(columns)
                     .then(response => {

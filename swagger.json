@@ -39,15 +39,7 @@
           "description" : "User can fetch all chats of indivisual person",
           "operationId" : "GetsingleChats",
           "produces" : [ "application/json" ],
-          "parameters" : [ {
-            "in" : "body",
-            "name" : "Body",
-            "description" : "",
-            "required" : true,
-            "schema" : {
-              "$ref" : "#/definitions/User-Model"
-            }
-          } ],
+          "parameters" : [],
           "responses" : {
             "200" : {
               "description" : "All chats of indivisual person",
@@ -55,22 +47,6 @@
             }
           },
           "deprecated" : false
-        }
-      }
-    },
-    "securityDefinitions" : { },
-    "definitions" : {
-      "User-Model" : {
-        "type" : "object",
-        "required" : [ "username" ],
-        "properties" : {
-          "username" : {
-            "type" : "string"
-          }
-        },
-        "title" : "Join Chat",
-        "example" : {
-          "username" : "axel"
         }
       }
     }
