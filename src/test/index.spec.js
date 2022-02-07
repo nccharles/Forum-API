@@ -65,7 +65,7 @@ describe('Testing endpoints', () => {
         done();
       });
   });
-  it('it should get room chats', (done) => {
+  it('it should fetch one on one chat history of a user', (done) => {
     chai.request(server)
       .get('/api/v3/room/charles/veve').end((err, res) => {
         if (err) return done(err);
@@ -79,7 +79,7 @@ describe('Testing endpoints', () => {
         done();
       });
   });
-  it('it should get user rooms', (done) => {
+  it('it should fetch user rooms', (done) => {
     chai.request(server)
       .get('/api/v3/rooms/charles').end((err, res) => {
         if (err) return done(err);
@@ -112,7 +112,7 @@ describe('Testing endpoints', () => {
       });
   });
 
-  it('it should get all forum chats from database', (done) => {
+  it('it should fetch forum(Devs) chat history', (done) => {
     chai.request(server)
       .get('/api/v3/chats')
       .end((err, res) => {
