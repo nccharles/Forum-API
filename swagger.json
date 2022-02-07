@@ -101,7 +101,7 @@
         },
         "title" : "Join Chat",
         "example" : {
-          "email" : "Charles"
+          "username" : "charles"
         }
       }
     }
