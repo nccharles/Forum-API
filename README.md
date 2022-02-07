@@ -32,6 +32,12 @@ yarn run db:create
 yarn run db:migrate
 yarn run dev
 ```
+#### LIVE CHAT URL
+- https://dev4um.herokuapp.com/
+
+#### API Documentation
+-  https://dev4um.herokuapp.com/api-docs
+
 #### How to get a local copy and Use
 **Clone repository**
 - copy the link to the project from github website

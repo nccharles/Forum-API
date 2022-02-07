@@ -54,11 +54,7 @@ describe('Testing endpoints', () => {
   });
   it('it should insert room data to the database', (done) => {
     chai.request(server)
-      .post('/api/v3/room/veve')
-      .send({
-        username: 'charles'
-      })
-      .end((err, res) => {
+      .post('/api/v3/room/charles/veve').end((err, res) => {
         if (err) return done(err);
         expect(res.body).to.have.keys('status','message','data');
         expect(res.status).to.be.a('number');
@@ -71,11 +67,7 @@ describe('Testing endpoints', () => {
   });
   it('it should get room chats', (done) => {
     chai.request(server)
-      .get('/api/v3/room/veve')
-      .send({
-        username: 'charles'
-      })
-      .end((err, res) => {
+      .get('/api/v3/room/charles/veve').end((err, res) => {
         if (err) return done(err);
         expect(res.body).to.have.keys('status','message','data');
         expect(res.status).to.be.a('number');
@@ -89,11 +81,7 @@ describe('Testing endpoints', () => {
   });
   it('it should get user rooms', (done) => {
     chai.request(server)
-      .get('/api/v3/rooms')
-      .send({
-        username: 'charles'
-      })
-      .end((err, res) => {
+      .get('/api/v3/rooms/charles').end((err, res) => {
         if (err) return done(err);
         expect(res.body).to.have.keys('status','message','data');
         expect(res.status).to.be.a('number');

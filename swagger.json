@@ -1,0 +1,53 @@
+{
+    "swagger" : "2.0",
+    "info" : {
+      "description" : "Microservice that allows developers to post questions about issues they are facing. Other developers can respond to the questions in re",
+      "version" : "2.0.0",
+      "title" : "Forum / Chat System for Developers",
+      "contact" : {
+        "name" : "Forum / Chat System API Documentation",
+        "url" : "https://dev4um.herokuapp.com/api-docs"
+      }
+    },
+    "host" : "dev4um.herokuapp.com",
+    "basePath" : "/api/v3",
+    "schemes" : [ "https", "http" ],
+    "consumes" : [ "application/json" ],
+    "produces" : [ "application/json" ],
+    "paths" : {
+      "/chats" : {
+        "get" : {
+          "tags" : [ "Fetch all Devs Chats" ],
+          "summary" : "Get all Chats with details from Group called Devs",
+          "description" : "Endpoint that fetches all Chats with details from Group(Devs)",
+          "operationId" : "ChatsGet",
+          "produces" : [ "application/json" ],
+          "parameters" : [ ],
+          "responses" : {
+            "200" : {
+              "description" : "",
+              "headers" : { }
+            }
+          },
+          "deprecated" : false
+        }
+      },
+      "/room/charles" : {
+        "get" : {
+          "tags" : [ "Fetch one on one chats" ],
+          "summary" : "Get all chats from two people",
+          "description" : "User can fetch all chats of indivisual person",
+          "operationId" : "GetsingleChats",
+          "produces" : [ "application/json" ],
+          "parameters" : [],
+          "responses" : {
+            "200" : {
+              "description" : "All chats of indivisual person",
+              "headers" : { }
+            }
+          },
+          "deprecated" : false
+        }
+      }
+    }
+  }
