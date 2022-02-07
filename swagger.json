@@ -25,13 +25,14 @@
           "summary" : "Add username endpoint",
           "description" : "This is Endpoint that allows a user join the Forum with username",
           "operationId" : "JoinChat",
+          "consumes" : [ "application/json" ],
           "produces" : [ "application/json" ],
           "parameters" : [ {
             "in" : "formData",
             "description" : "",
             "required" : true,
             "schema" : {
-              "$ref" : "#/definitions/User-Model"
+              "$ref" : "#/definitions/Join-Model"
             }
           } ],
           "responses" : {
@@ -64,8 +65,9 @@
         "get" : {
           "tags" : [ "Fetch one on one chats" ],
           "summary" : "Get all chats from two people",
-          "description" : "User can view all chats of indivisual person",
+          "description" : "User can fetch all chats of indivisual person",
           "operationId" : "GetoneChats",
+          "consumes" : [ "multipart/form-data" ],
           "produces" : [ "application/json" ],
           "parameters" : [  {
             "name" : "username",
@@ -86,7 +88,7 @@
     },
     "securityDefinitions" : { },
     "definitions" : {
-      "User-Model" : {
+      "Join-Model" : {
         "type" : "object",
         "required" : [ "username" ],
         "properties" : {
