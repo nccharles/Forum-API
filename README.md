@@ -61,13 +61,19 @@ yarn run test
 - Chai HTTP
 ##### Usage Example
 ```
- Testing welcome endpoints
-    ✔ should accept status 200
-    ✔ it should insert user data to the database (408ms)
+  Testing endpoints
+    ✔ it should insert first user to the database (202ms)
+    ✔ it should throw an error
+    ✔ it should insert second user to the database (42ms)
+    ✔ it should insert room data to the database
+    ✔ it should fetch one on one chat history of a user
+    ✔ it should fetch user rooms
     ✔ it should insert chat data to the database
-    ✔ it should get all data from database
-    ✔ It should truncate users table (159ms)
-    ✔ It should truncate chats table
+    ✔ it should fetch forum(Devs) chat history
+  users function
+    ✔ It should format message
+  Truncate tables
+    ✔ It should truncate tables (268ms)
 ```
 #### Contributor(s)
 - Charles NDAYISABA
