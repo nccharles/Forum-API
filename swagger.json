@@ -1,0 +1,103 @@
+{
+    "swagger" : "2.0",
+    "info" : {
+      "description" : "Microservice that allows developers to post questions about issues they are facing. Other developers can respond to the questions in re",
+      "version" : "2.0.0",
+      "title" : "Forum / Chat System for Developers",
+      "contact" : {
+        "name" : "Forum / Chat System API Documentation",
+        "url" : "https://dev4um.herokuapp.com/api-docs"
+      }
+    },
+    "host" : "dev4um.herokuapp.com",
+    "basePath" : "/api/v3",
+    "tags" : [ {
+      "name" : "Join",
+      "description" : "Join Forum Endpoint"
+    } ],
+    "schemes" : [ "https", "http" ],
+    "consumes" : [ "application/json" ],
+    "produces" : [ "application/json" ],
+    "paths" : {
+      "/user" : {
+        "post" : {
+          "tags" : [ "Join" ],
+          "summary" : "Add username endpoint",
+          "description" : "This is Endpoint that allows a user join the Forum with username",
+          "operationId" : "JoinChat",
+          "produces" : [ "application/json" ],
+          "parameters" : [ {
+            "in" : "formData",
+            "description" : "",
+            "required" : true,
+            "schema" : {
+              "$ref" : "#/definitions/User-Model"
+            }
+          } ],
+          "responses" : {
+            "201" : {
+              "description" : "",
+              "headers" : { }
+            }
+          },
+          "deprecated" : false
+        }
+      },
+      "/chats" : {
+        "get" : {
+          "tags" : [ "Fetch all Forum Chats" ],
+          "summary" : "Get all Chats with details from Group",
+          "description" : "Endpoint that fetches all Chats with details from Group",
+          "operationId" : "ChatsGet",
+          "produces" : [ "application/json" ],
+          "parameters" : [ ],
+          "responses" : {
+            "200" : {
+              "description" : "",
+              "headers" : { }
+            }
+          },
+          "deprecated" : false
+        }
+      },
+      "/room/charles" : {
+        "get" : {
+          "tags" : [ "Fetch one on one chats" ],
+          "summary" : "Get all chats from two people",
+          "description" : "User can view all chats of indivisual person",
+          "operationId" : "GetoneChats",
+          "produces" : [ "application/json" ],
+          "parameters" : [  {
+            "name" : "username",
+            "in" : "formData",
+            "description" : "",
+            "required" : true,
+            "type" : "string"
+          } ],
+          "responses" : {
+            "200" : {
+              "description" : "All chats of indivisual person",
+              "headers" : { }
+            }
+          },
+          "deprecated" : false
+        }
+      }
+    },
+    "securityDefinitions" : { },
+    "definitions" : {
+      "User-Model" : {
+        "type" : "object",
+        "required" : [ "username" ],
+        "properties" : {
+          "username" : {
+            "type" : "string"
+          }
+        },
+        "title" : "Join Chat",
+        "example" : {
+          "email" : "Charles"
+        }
+      }
+    }
+  }

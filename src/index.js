@@ -1,6 +1,8 @@
 import express from 'express'
 import frouter from './routers/forum';
 import bodyParser from 'body-parser';
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocument from '../swagger.json'
 import moment from "moment"
 import process from 'process'
 import path from 'path'
@@ -25,6 +27,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 //app pages
 app.use("/", pages);
 app.use('/api/v3', frouter);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 // sends out the 10 most recent messages from recent to old
 const emitMostRecentMessages = async (socket, room) => {
   const result = (await db.getChats('*')).filter(c => c.room === room.id)
