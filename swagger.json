@@ -11,10 +11,6 @@
     },
     "host" : "dev4um.herokuapp.com",
     "basePath" : "/api/v3",
-    "tags" : [ {
-      "name" : "Join",
-      "description" : "Join Forum Endpoint"
-    } ],
     "schemes" : [ "https", "http" ],
     "consumes" : [ "application/json" ],
     "produces" : [ "application/json" ],
@@ -41,8 +37,7 @@
           "tags" : [ "Fetch one on one chats" ],
           "summary" : "Get all chats from two people",
           "description" : "User can fetch all chats of indivisual person",
-          "operationId" : "GetoneChats",
-          "consumes" : [ "application/json" ],
+          "operationId" : "GetsingleChats",
           "produces" : [ "application/json" ],
           "parameters" : [ {
             "in" : "body",
