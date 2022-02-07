@@ -35,7 +35,7 @@ const emitMostRecentMessages = async (socket, room) => {
     result.map(i => i.created_at = moment(i.created_at).format('dd MM,YY h:mm A'))
     io.to(room.name).emit('message', result);
   } else {
-    socket.emit('message', formatMessage("bot", 'Welcome here is the begginning of your chats'))
+    socket.emit('message', formatMessage("bot", 'Welcome, Here is the begginning of your chats'))
   }
 };
 
@@ -67,7 +67,7 @@ io.on('connection', socket => {
     // Welcome current user
     emitMostRecentMessages(socket, roomData)
     // Broadcast when a user connects
-    socket.broadcast.to(roomData.name).emit('message', formatMessage("bot", `${username} has joined the chat`))
+    // socket.broadcast.to(roomData.name).emit('message', formatMessage("bot", `${username} has joined the chat`))
 
     // Send users and room info
     io.to(roomData.name).emit('roomUsers', {
