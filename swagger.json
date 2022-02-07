@@ -19,37 +19,11 @@
     "consumes" : [ "application/json" ],
     "produces" : [ "application/json" ],
     "paths" : {
-      "/user" : {
-        "post" : {
-          "tags" : [ "Join" ],
-          "summary" : "Add username endpoint",
-          "description" : "This is Endpoint that allows a user join the Forum with username",
-          "operationId" : "JoinChat",
-          "consumes" : [ "application/json" ],
-          "produces" : [ "application/json" ],
-          "parameters" : [ {
-            "in" : "body",
-            "name" : "Body",
-            "description" : "",
-            "required" : true,
-            "schema" : {
-              "$ref" : "#/definitions/User-Model"
-            }
-          } ],
-          "responses" : {
-            "201" : {
-              "description" : "",
-              "headers" : { }
-            }
-          },
-          "deprecated" : false
-        }
-      },
       "/chats" : {
         "get" : {
-          "tags" : [ "Fetch all Forum Chats" ],
-          "summary" : "Get all Chats with details from Group",
-          "description" : "Endpoint that fetches all Chats with details from Group",
+          "tags" : [ "Fetch all Devs Chats" ],
+          "summary" : "Get all Chats with details from Group called Devs",
+          "description" : "Endpoint that fetches all Chats with details from Group(Devs)",
           "operationId" : "ChatsGet",
           "produces" : [ "application/json" ],
           "parameters" : [ ],
@@ -101,7 +75,7 @@
         },
         "title" : "Join Chat",
         "example" : {
-          "username" : "charles"
+          "username" : "axel"
         }
       }
     }
