@@ -32,7 +32,7 @@
           "deprecated" : false
         }
       },
-      "/room/charles" : {
+      "/room/charles/axel" : {
         "get" : {
           "tags" : [ "Fetch one on one chats" ],
           "summary" : "Get all chats from two people",
