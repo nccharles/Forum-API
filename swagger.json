@@ -28,11 +28,12 @@
           "consumes" : [ "application/json" ],
           "produces" : [ "application/json" ],
           "parameters" : [ {
-            "in" : "formData",
+            "in" : "body",
+            "name" : "Body",
             "description" : "",
             "required" : true,
             "schema" : {
-              "$ref" : "#/definitions/Join-Model"
+              "$ref" : "#/definitions/User-Model"
             }
           } ],
           "responses" : {
@@ -67,14 +68,16 @@
           "summary" : "Get all chats from two people",
           "description" : "User can fetch all chats of indivisual person",
           "operationId" : "GetoneChats",
-          "consumes" : [ "multipart/form-data" ],
+          "consumes" : [ "application/json" ],
           "produces" : [ "application/json" ],
-          "parameters" : [  {
-            "name" : "username",
-            "in" : "formData",
+          "parameters" : [ {
+            "in" : "body",
+            "name" : "Body",
             "description" : "",
             "required" : true,
-            "type" : "string"
+            "schema" : {
+              "$ref" : "#/definitions/User-Model"
+            }
           } ],
           "responses" : {
             "200" : {
@@ -88,7 +91,7 @@
     },
     "securityDefinitions" : { },
     "definitions" : {
-      "Join-Model" : {
+      "User-Model" : {
         "type" : "object",
         "required" : [ "username" ],
         "properties" : {
