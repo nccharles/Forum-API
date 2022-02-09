@@ -141,7 +141,7 @@ li a{
 	
 }
 .msg-container .message .text{
-	padding:20px;
+	padding:10px;
 	background-color: #fff;
 	border-top-right-radius: 15px;
 	margin-bottom: 5px;
@@ -153,7 +153,7 @@ li a{
 	margin-bottom: 15px;
 }
 .msg-container .me .text{
-padding:20px;
+padding:10px;
 background-color:  #c8d6e5;
 border-top-left-radius: 15px;
 border-bottom-left-radius: 15px;
@@ -261,7 +261,12 @@ margin-bottom: 5px;
 	width: 100%;
 }
 
-@media (max-width: 700px) {
+@media (max-width: 425px) {
+	body,.chat-container{
+		margin: 0;
+		height: 100%;
+		width: 100%;
+	}
 	.chat-main {
 		display: block;
 	}
