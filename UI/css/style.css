@@ -29,7 +29,6 @@ ul {
 a {
 	text-decoration: none;
 	color: var(--dark-color-a);
-	/* width: 100%; */
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -127,14 +126,12 @@ li a{
 	text-transform: capitalize;
 }
 .chat-messages {
-	/* padding: 10px; */
 	height: 500px;
 	overflow-y: scroll;
 }
 .chat-messages .msg-container{
 	width: 100%;
 	height: auto;
-	/* margin: 2px; */
 	overflow-y: hidden;
 }
 .msg-container .message {
@@ -148,7 +145,6 @@ li a{
 	padding:20px;
 	background-color: #fff;
 	border-top-right-radius: 15px;
-	/* border-bottom-right-radius: 15px; */
 	margin-bottom: 5px;
 }
 .msg-container .me{
