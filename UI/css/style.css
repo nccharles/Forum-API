@@ -161,12 +161,17 @@ border-bottom-left-radius: 15px;
 margin-bottom: 5px;
 }
 .msg-container .bot{
-	padding:15px 60px;
 	height: auto;
 	width: 80%;
 	margin: 10px auto;
-	border:2px dashed #c8d6e5;
+}
+.msg-container .bot .text{
+	background-color: #636e72;
+	color: white;
 	border-radius: 50px;
+	padding:10px;
+	font-size: small;
+	text-align: center;
 }
 
 .msg-container .message .meta,
@@ -181,12 +186,14 @@ margin-bottom: 5px;
 }
 
 .msg-container .message span,
-.msg-container .me span,
-.msg-container .bot span {
+.msg-container .me span {
 	color: #333;
 	font-size: x-small;
 	float: right;
 	margin-bottom: -30px;
+}
+.msg-container .bot span {
+	display: none;
 }
 
 .chat-form-container {

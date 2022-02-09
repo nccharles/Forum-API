@@ -54,8 +54,7 @@ const outputMessage = (msg) => {
  ${msg.text}    
 </p><span>${msg.created_at}</span>`
 div.appendChild(divMessage)
-console.log(div)
-    document.querySelector('.chat-messages').appendChild(div)
+document.querySelector('.chat-messages').appendChild(div)
 }
 const outputRoomName = (room) => {
     roomName.innerHTML = room !== 'devs' ? single : room
