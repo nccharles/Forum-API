@@ -75,8 +75,6 @@ li a{
 .chat-header {
 	background: var(--dark-color-a);
 	color: #fff;
-	border-top-left-radius: 5px;
-	border-top-right-radius: 5px;
 	padding: 15px;
 	display: flex;
 	align-items: center;
@@ -126,6 +124,7 @@ li a{
 	text-transform: capitalize;
 }
 .chat-messages {
+	padding: 5px;
 	height: 500px;
 	overflow-y: scroll;
 }
@@ -223,8 +222,6 @@ margin-bottom: 5px;
 	text-align: center;
 	padding: 20px;
 	background: var(--dark-color-a);
-	border-top-left-radius: 5px;
-	border-top-right-radius: 5px;
 }
 
 .join-main {
