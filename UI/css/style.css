@@ -127,32 +127,44 @@ li a{
 	text-transform: capitalize;
 }
 .chat-messages {
-	padding: 10px;
+	/* padding: 10px; */
 	height: 500px;
 	overflow-y: scroll;
 }
-
-.chat-messages .message {
-	padding:20px;
+.chat-messages .msg-container{
+	width: 100%;
 	height: auto;
-	width: 60%;
+	/* margin: 2px; */
+	overflow-y: hidden;
+}
+.msg-container .message {
+	height: auto;
+	max-width: 60%;
 	float: left;
 	margin-bottom: 15px;
+	
+}
+.msg-container .message .text{
+	padding:20px;
 	background-color: #fff;
 	border-top-right-radius: 15px;
-	border-bottom-right-radius: 15px;
+	/* border-bottom-right-radius: 15px; */
+	margin-bottom: 5px;
 }
-.chat-messages .me{
-	padding:20px;
+.msg-container .me{
 	height: auto;
-	width: 60%;
+	max-width: 60%;
 	float: right;
 	margin-bottom: 15px;
-	background-color:  #c8d6e5;
-	border-top-left-radius: 15px;
-	border-bottom-left-radius: 15px;
 }
-.chat-messages .bot{
+.msg-container .me .text{
+padding:20px;
+background-color:  #c8d6e5;
+border-top-left-radius: 15px;
+border-bottom-left-radius: 15px;
+margin-bottom: 5px;
+}
+.msg-container .bot{
 	padding:15px 60px;
 	height: auto;
 	width: 80%;
@@ -161,9 +173,9 @@ li a{
 	border-radius: 50px;
 }
 
-.chat-messages .message .meta,
-.chat-messages .me .meta,
-.chat-messages .bot .meta {
+.msg-container .message .meta,
+.msg-container .me .meta,
+.msg-container .bot .meta {
 	font-size: 15px;
 	font-weight: bold;
 	color: var(--dark-color-b);
@@ -172,12 +184,13 @@ li a{
 	margin-bottom: 7px;
 }
 
-.chat-messages .message .meta span,
-.chat-messages .me .meta span,
-.chat-messages .bot .meta span {
+.msg-container .message span,
+.msg-container .me span,
+.msg-container .bot span {
 	color: #333;
 	font-size: x-small;
 	float: right;
+	margin-bottom: -30px;
 }
 
 .chat-form-container {

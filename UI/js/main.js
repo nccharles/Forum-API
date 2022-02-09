@@ -46,11 +46,15 @@ chatForm.addEventListener('submit', (e) => {
 // Output message to DOM
 const outputMessage = (msg) => {
     const div = document.createElement('div');
-    div.classList.add(msg.username === "bot"?'bot':msg.username === username.toLowerCase() ? 'me':'message');
-    div.innerHTML = ` <p class="meta">${msg.username === "bot"?"bot":msg.username === username.toLowerCase() ? "Me" : `<a href="chat?username=${username}&room=${msg.username}">${msg.username}</a>`}<span>${msg.created_at}</span></p>
+    div.classList.add('msg-container');
+    const divMessage=document.createElement('div');
+    divMessage.classList.add(msg.username === "bot"?'bot':msg.username === username.toLowerCase() ? 'me':'message');
+    divMessage.innerHTML = `<p class="meta">${msg.username === "bot"?"":msg.username === username.toLowerCase() ? "" : `<a href="chat?username=${username}&room=${msg.username}">${msg.username}</a>`}</p>
 <p class="text">
  ${msg.text}    
-</p>`
+</p><span>${msg.created_at}</span>`
+div.appendChild(divMessage)
+console.log(div)
     document.querySelector('.chat-messages').appendChild(div)
 }
 const outputRoomName = (room) => {
