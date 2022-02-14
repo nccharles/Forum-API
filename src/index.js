@@ -33,7 +33,7 @@ const emitMostRecentMessages = async (socket, room) => {
   const result = (await db.getChats('*')).filter(c => c.room === room.id)
   if (result.length) {
     result.map(i => i.created_at = moment(i.created_at).format('ddd DD MMM,YY h:mm A'))
-    io.to(room.name).emit('message', result);
+    socket.emit('message', result);
   } else {
     socket.emit('message', formatMessage("bot", 'Welcome, Here is the begginning of your chats'))
   }
