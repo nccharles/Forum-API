@@ -35,14 +35,14 @@ const usersTable = `CREATE TABLE users(
     id SERIAL PRIMARY KEY NOT NULL,
     name VARCHAR(80) UNIQUE NOT NULL,
     participants varchar(255) ARRAY DEFAULT ARRAY['devs'],
-    created_at TIMESTAMP NOT NULL DEFAULT now()
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
   );`;
 const chatsTable = `CREATE TABLE chats(
     id SERIAL PRIMARY KEY NOT NULL,
     username varchar(255) REFERENCES users(username) NOT NULL,
     room INTEGER REFERENCES rooms(id) NOT NULL,
     text text NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT now()
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
   );`;
 const createAllTables = async () => {
   try {
